@@ -3,19 +3,20 @@ require "memoit"
 require "jwt"
 
 class JwtAuthentication
-  pattr_initialize :app
+  pattr_initialize :app, :options
 
   def call(env)
-    Request.call(app, env)
+    Request.call(app, options, env)
   end
 
   private
 
   class Request
-    method_object :app, :env
+    method_object :app, :options, :env
 
     def call
       return app.call(env) unless configured?
+      return app.call(env) if ignored_path?
       return app.call(env) if authenticated?
 
       if token
@@ -32,6 +33,10 @@ class JwtAuthentication
 
     def configured?
       ENV["JWT_KEY"]
+    end
+
+    def ignored_path?
+      options.fetch(:except).match(request.path)
     end
 
     def authenticated?

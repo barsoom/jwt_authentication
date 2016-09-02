@@ -36,7 +36,10 @@ class JwtAuthentication
     end
 
     def ignored_path?
-      options.fetch(:except).match(request.path)
+      options.fetch(:ignore).any? { |opts|
+        opts.fetch(:method) == request.request_method &&
+          opts.fetch(:path) == request.path
+      }
     end
 
     def authenticated?

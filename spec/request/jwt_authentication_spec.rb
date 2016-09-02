@@ -4,7 +4,9 @@ require "rack/test"
 require "timecop"
 
 class TestApp < Sinatra::Application
-  use JwtAuthentication, except: /public_info/
+  use JwtAuthentication, ignore: [
+    { method: "GET", path: "/public_info" }
+  ]
 
   configure do
     enable :sessions
@@ -13,6 +15,10 @@ class TestApp < Sinatra::Application
 
   get "/public_info" do
     "Public info"
+  end
+
+  post "/public_info" do
+    raise "should not be called"
   end
 
   get "/:page" do
@@ -84,6 +90,9 @@ describe JwtAuthentication do
     get "/public_info"
     expect(last_response.status).to eq(200)
     expect(last_response.body).to eq("Public info")
+
+    post "/public_info"
+    expect(last_response.status).to eq(302)
   end
 
   private

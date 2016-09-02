@@ -1,5 +1,6 @@
 require "attr_extras"
 require "memoit"
+require "jwt"
 
 class JwtAuthentication
   pattr_initialize :app
@@ -45,11 +46,7 @@ class JwtAuthentication
     end
 
     def request_auth
-      if ENV["RACK_ENV"] == "test"
-        [ 200, {}, [ "Would redirect to: #{request_auth_url}" ] ]
-      else
-        [ 302, { "Location" => request_auth_url }, [ "" ] ]
-      end
+      [ 302, { "Location" => request_auth_url }, [ "" ] ]
     end
 
     def respond_with_unauthorized_error

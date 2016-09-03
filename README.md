@@ -1,6 +1,6 @@
 # JwtAuthentication
 
-A rack middleware to provide simple JWT token based authentication (for Single Sign On).
+Simple JWT token based Single Sign On for rack-based apps.
 
 Use another app's login to provide access to any rack-based application for a limited time.
 

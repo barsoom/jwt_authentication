@@ -67,6 +67,8 @@ gem "jwt"
 And add an endpoint similar to this:
 
 ```ruby
+require "jwt"
+
 get "/sso" do
   if current_user.logged_in?
     # app_name = params[:app]

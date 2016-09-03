@@ -86,6 +86,13 @@ describe JwtAuthentication do
     expect(last_response.status).to eq(403)
   end
 
+  it "rejects a token that is too old" do
+    token = build_token(secret: secret_key)
+    Timecop.travel 3
+    get "/?token=#{token}"
+    expect(last_response.status).to eq(403)
+  end
+
   it "can skip some paths by config" do
     get "/public_info"
     expect(last_response.status).to eq(200)

@@ -70,7 +70,6 @@ And add an endpoint similar to this:
 get "/sso" do
   if current_user.logged_in?
     # app_name = params[:app]
-    token = params[:token]
 
     # NOTE: See "Security recommendations" for more secure values.
     secret = ENV.fetch("JWT_KEY")

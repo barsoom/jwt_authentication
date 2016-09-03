@@ -4,7 +4,15 @@ Simple JWT token based Single Sign On for rack-based apps.
 
 Use another app's login to provide access and user data to any rack-based application for a limited time.
 
-NOTE: Not suitable for apps with forms since it will redirect after the session timeout loosing the data.
+## Important note about forms
+
+This is not suitable for apps with forms since it will redirect after the session timeout loosing the data.
+
+For many apps this isn't a problem.
+
+One simple workaround could be to redirect to `JWT_PARAM_MISSING_REDIRECT_URL` before loading a form page, but it's not fool-proof since people sometimes leave forms open in tabs for a very long time.
+
+This can be solved by a more complex protocol but that is out of scope of this library. Ideas for a simple solution are of course welcome :)
 
 ## Config
 

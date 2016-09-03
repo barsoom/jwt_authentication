@@ -2,9 +2,7 @@
 
 Simple JWT token based Single Sign On for rack-based apps.
 
-Use another app's login to provide access to any rack-based application for a limited time.
-
-This version does not provide any info about the user (email, name, etc) but it's technically possible to include that info within the JWT-token.
+Use another app's login to provide access and user data to any rack-based application for a limited time.
 
 NOTE: Not suitable for apps with advanced forms since it will redirect after the session timeout loosing the data.
 
@@ -39,6 +37,8 @@ get "/public_info" do
 end
 
 get "/admin/:page" do
+  # session[:jwt_user_data]["name"]
+
   "Only accessible after receiving a valid JWT token"
 end
 ```
@@ -78,7 +78,7 @@ get "/sso" do
     app_url = request.referer
 
     # This token is only valid for 2 seconds to prevent replay-attacks.
-    payload_data = { exp: Time.now.to_i + 2 }
+    payload_data = { exp: Time.now.to_i + 2, user: { name: current_user.name } }
     token = JWT.encode(payload_data, secret, "HS512")
 
     redirect_to "#{app_url}?token=#{token}"
@@ -100,4 +100,3 @@ end
 ## License
 
 The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
-

@@ -21,6 +21,10 @@ class TestApp < Sinatra::Application
     raise "should not be called"
   end
 
+  get "/data.json" do
+    session[:jwt_user_data].to_json
+  end
+
   get "/:page" do
     "Hello, world"
   end
@@ -101,10 +105,18 @@ describe JwtAuthentication do
     expect(last_response.status).to eq(302)
   end
 
+  it "can provide data about the user" do
+    token = build_token(secret: secret_key)
+    get "/?token=#{token}"
+
+    get "/data.json"
+    expect(JSON.parse(last_response.body)).to eq({ "email" => "foo@example.com", "name" => "Foo" })
+  end
+
   private
 
   def build_token(secret:)
-    payload_data = { exp: Time.now.to_i + 2 }
+    payload_data = { exp: Time.now.to_i + 2, user: { email: "foo@example.com", name: "Foo" }  }
     JWT.encode(payload_data, secret, "HS512")
   end
 end

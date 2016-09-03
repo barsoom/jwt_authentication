@@ -20,7 +20,8 @@ class JwtAuthentication
       return app.call(env) if authenticated?
 
       if token
-        verify_token
+        user_data = verify_token
+        remember_user_data(user_data)
         remember_last_authenicated_time
         redirect_to_app_after_auth
       else
@@ -62,7 +63,8 @@ class JwtAuthentication
     end
 
     def verify_token
-      JWT.decode(token, ENV.fetch("JWT_KEY"), verify = true, algorithm: ENV.fetch("JWT_ALGORITHM"))
+      data, _ = JWT.decode(token, ENV.fetch("JWT_KEY"), verify = true, algorithm: ENV.fetch("JWT_ALGORITHM"))
+      data.fetch("user", {})
     end
 
     def url_after_auth
@@ -71,6 +73,10 @@ class JwtAuthentication
 
     def last_authenticated_time
       request.session[:jwt_last_authenticated_time]
+    end
+
+    def remember_user_data(user_data)
+      request.session[:jwt_user_data] = user_data
     end
 
     def remember_last_authenicated_time

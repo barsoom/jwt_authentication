@@ -91,7 +91,7 @@ end
 ## Security recommendations
 
 - Use a different secret key for each app so that if the key is ever exposed it can't be used to give access to any other app, e.g. `secret = app_keys.fetch(app_name)`.
-- Limit redirects to known urls so that you know which apps use the centralized login (e.g. `app_url = app_urls.fetch(app_name)`).
+- Limit redirects to known urls so that you know which apps use the centralized login, e.g. `app_url = app_urls.fetch(app_name)`.
 - Consider limiting access to apps even more (e.g. all users won't need access to all external apps).
 - Use as short a possible `JWT_SESSION_TIMEOUT_IN_SECONDS` as you can.
   - If you make it too short the user will be redirected to the central app all the time which slows things down.

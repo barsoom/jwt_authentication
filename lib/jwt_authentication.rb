@@ -38,7 +38,7 @@ class JwtAuthentication
     def ignored_path?
       options.fetch(:ignore).any? { |opts|
         opts.fetch(:method) == request.request_method &&
-          opts.fetch(:path) == request.path
+        opts.fetch(:path)   == request.path
       }
     end
 

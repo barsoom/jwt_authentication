@@ -4,7 +4,7 @@ Simple JWT token based Single Sign On for rack-based apps.
 
 Use another app's login to provide access and user data to any rack-based application for a limited time.
 
-NOTE: Not suitable for apps with advanced forms since it will redirect after the session timeout loosing the data.
+NOTE: Not suitable for apps with forms since it will redirect after the session timeout loosing the data.
 
 ## Config
 

@@ -35,7 +35,6 @@ describe JwtAuthentication do
 
   before do
     ENV["JWT_SESSION_TIMEOUT_IN_SECONDS"] = "600"
-    ENV["JWT_PARAM_NAME"] = "token"
     ENV["JWT_PARAM_MISSING_REDIRECT_URL"] = "http://example.com/request_jwt_auth?app=demo"
     ENV["JWT_ALGORITHM"] = "HS512"
     ENV["JWT_KEY"] = secret_key

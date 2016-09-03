@@ -87,7 +87,7 @@ class JwtAuthentication
 
     memoize \
     def token
-      param_name = ENV.fetch("JWT_PARAM_NAME")
+      param_name = ENV.fetch("JWT_PARAM_NAME", "token")
       request.params[param_name]
     end
 

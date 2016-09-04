@@ -64,8 +64,6 @@ Let's assume we have a central app where the user is logged in by some other mea
 
 ## Example: Authentication provider
 
-Given that `JWT_ALGORITHM` is "HS512":
-
 Add this to your Gemfile:
 
 ```

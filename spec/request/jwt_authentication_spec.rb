@@ -62,14 +62,30 @@ describe JwtAuthentication do
     get "/foo"
 
     token = build_token(secret: secret_key)
-    get "/?token=#{token}"
+    get "/?jwt_authentication_token=#{token}"
+    expect(last_response.status).to eq(302)
+    expect(last_response.header["Location"]).to eq("http://example.org/foo")
+  end
+
+  # In some of our apps we use this to redirect back to the main app
+  # to change locale globally and then redirect to the client app with
+  # the new locale data. Then we want it to go back to the URL you
+  # where previously on.
+  it "keeps the requested url even when already authorized" do
+    token = build_token(secret: secret_key)
+    get "/?jwt_authentication_token=#{token}"
+
+    get "/foo"
+
+    token = build_token(secret: secret_key)
+    get "/?jwt_authentication_token=#{token}"
     expect(last_response.status).to eq(302)
     expect(last_response.header["Location"]).to eq("http://example.org/foo")
   end
 
   it "is still authenticated until the timeout" do
     token = build_token(secret: secret_key)
-    get "/?token=#{token}"
+    get "/?jwt_authentication_token=#{token}"
 
     Timecop.travel 9 * 60
     get "/bar"
@@ -85,14 +101,14 @@ describe JwtAuthentication do
     # Invalid token shows an error
     token = build_token(secret: invalid_secret_key)
 
-    get "/?token=#{token}"
+    get "/?jwt_authentication_token=#{token}"
     expect(last_response.status).to eq(403)
   end
 
   it "rejects a token that is too old" do
     token = build_token(secret: secret_key)
     Timecop.travel 3
-    get "/?token=#{token}"
+    get "/?jwt_authentication_token=#{token}"
     expect(last_response.status).to eq(403)
   end
 
@@ -107,7 +123,7 @@ describe JwtAuthentication do
 
   it "can provide data about the user" do
     token = build_token(secret: secret_key)
-    get "/?token=#{token}"
+    get "/?jwt_authentication_token=#{token}"
 
     get "/data.json"
     expect(JSON.parse(last_response.body)).to eq({ "email" => "foo@example.com", "name" => "Foo" })

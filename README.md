@@ -58,7 +58,7 @@ Let's assume we have a central app where the user is logged in by some other mea
 0. The user clicks a link taking them to the JWT-app.
 0. The JWT-app redirects to the central app using `JWT_PARAM_MISSING_REDIRECT_URL`.
 0. The central app sees that the user is logged in and has access to the JWT-app.
-0. The central app generates a token using `JWT_KEY` and redirects to the JWT-app with that token, e.g. `http://example.com/?token=abc123`.
+0. The central app generates a token using `JWT_KEY` and redirects to the JWT-app with that token, e.g. `http://example.com/?jwt_authentication_token=abc123`.
 0. The JWT-app validates the token using JwtAuthentication, and if valid, gives the user access for `JWT_SESSION_TIMEOUT_IN_SECONDS`.
 0. After that time, the user will be redirected to `JWT_PARAM_MISSING_REDIRECT_URL` to renew access to the JWT-app.
 
@@ -87,7 +87,7 @@ get "/sso" do
     payload_data = { exp: Time.now.to_i + 2, user: { name: current_user.name } }
     token = JWT.encode(payload_data, secret, "HS512")
 
-    redirect_to "#{app_url}?token=#{token}"
+    redirect_to "#{app_url}?jwt_authentication_token=#{token}"
   else
     redirect_to "/login"
   end

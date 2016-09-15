@@ -17,16 +17,23 @@ class JwtAuthentication
     def call
       return app.call(env) unless configured?
       return app.call(env) if ignored_path?
-      return app.call(env) if authenticated?
 
       if token
-        user_data = verify_token
-        remember_user_data(user_data)
-        remember_last_authenicated_time
+        unless authenticated?
+          user_data = verify_token
+          remember_user_data(user_data)
+          remember_last_authenicated_time
+        end
+
         redirect_to_app_after_auth
       else
-        remember_url_before_auth
-        request_auth
+        remember_url
+
+        if authenticated?
+          app.call(env)
+        else
+          request_auth
+        end
       end
     rescue JWT::DecodeError
       respond_with_unauthorized_error
@@ -83,7 +90,7 @@ class JwtAuthentication
       request.session[:jwt_last_authenticated_time] = Time.now.to_i
     end
 
-    def remember_url_before_auth
+    def remember_url
       request.session[:url_after_jwt_authentication] = request.url
     end
 
@@ -93,8 +100,10 @@ class JwtAuthentication
 
     memoize \
     def token
-      param_name = ENV.fetch("JWT_PARAM_NAME", "token")
-      request.params[param_name]
+      # The name of this param must be something we can assume is always
+      # intended for this middleware. It can't be "payload" or "token" since
+      # that could be something else.
+      request.params["jwt_authentication_token"]
     end
 
     memoize \

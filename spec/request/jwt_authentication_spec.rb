@@ -44,7 +44,7 @@ describe JwtAuthentication do
     ENV["JWT_KEY"] = secret_key
   end
 
-  it "does not interfer with requests when not configured" do
+  it "does not interfer with requests when it is not configured" do
     ENV["JWT_KEY"] = nil
 
     get "/foo"

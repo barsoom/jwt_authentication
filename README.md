@@ -103,6 +103,11 @@ end
   - If you make it too short the user will be redirected to the central app all the time which slows things down.
   - If you make it too long the user will still have access to the app long after they've logged out of the central app.
 
+## Running the tests
+
+    bundle
+    rake
+
 ## License
 
 The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).

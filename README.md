@@ -6,7 +6,7 @@ Use another app's login to provide access and user data to any rack-based applic
 
 ## Important note about forms
 
-This middleware is by default not suitable for apps with forms since it will redirect after the session timeout loosing the data.
+This middleware is by default not suitable for apps with forms since it will redirect after the session timeout losing the data.
 
 For many apps this isn't a problem.
 
@@ -30,6 +30,7 @@ require "sinatra"
 require "jwt_authentication"
 
 use JwtAuthentication, ignore: [
+  # wildcards allowed, but not regexes
   { method: "GET", path: "/public_info" },
   # { method: "*", path: "/api/*" }
   # "/api/*"

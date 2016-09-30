@@ -19,7 +19,7 @@ The middleware won't do anything unless `JWT_KEY` is set.
     export JWT_KEY="a long secret key"
     export JWT_ALGORITHM="HS512"
     export JWT_SESSION_TIMEOUT_IN_SECONDS="600"
-    export JWT_PARAM_MISSING_REDIRECT_URL="http://example.com/sso?app=demo"
+    export JWT_AUTH_MISSING_REDIRECT_URL="http://example.com/sso?app=demo"
 
 ## Example app
 
@@ -56,11 +56,11 @@ end
 Let's assume we have a central app where the user is logged in by some other means (e.g. username and password).
 
 0. The user clicks a link taking them to the JWT-app.
-0. The JWT-app redirects to the central app using `JWT_PARAM_MISSING_REDIRECT_URL`.
+0. The JWT-app redirects to the central app using `JWT_AUTH_MISSING_REDIRECT_URL`.
 0. The central app sees that the user is logged in and has access to the JWT-app.
 0. The central app generates a token using `JWT_KEY` and redirects to the JWT-app with that token, e.g. `http://example.com/?jwt_authentication_token=abc123`.
 0. The JWT-app validates the token using JwtAuthentication, and if valid, gives the user access for `JWT_SESSION_TIMEOUT_IN_SECONDS`.
-0. After that time, the user will be redirected to `JWT_PARAM_MISSING_REDIRECT_URL` to renew access to the JWT-app.
+0. After that time, the user will be redirected to `JWT_AUTH_MISSING_REDIRECT_URL` to renew access to the JWT-app.
 
 ## Example: Authentication provider
 

@@ -115,7 +115,7 @@ class JwtAuthentication
     end
 
     def request_auth_url
-      ENV.fetch("JWT_PARAM_MISSING_REDIRECT_URL")
+      ENV.fetch("JWT_AUTH_MISSING_REDIRECT_URL")
     end
 
     def sso_session_persister

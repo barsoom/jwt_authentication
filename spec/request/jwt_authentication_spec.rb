@@ -5,7 +5,8 @@ require "timecop"
 
 class TestApp < Sinatra::Application
   use JwtAuthentication, ignore: [
-    { method: "G*", path: "/public*" }
+    { method: "G*", path: "/public*" },
+    "/other_public_info",
   ]
 
   configure do
@@ -15,6 +16,10 @@ class TestApp < Sinatra::Application
 
   get "/public_info" do
     "Public info"
+  end
+
+  get "/other_public_info" do
+    "Other public info"
   end
 
   post "/public_info" do
@@ -150,6 +155,10 @@ describe JwtAuthentication do
     get "/public_info"
     expect(last_response.status).to eq(200)
     expect(last_response.body).to eq("Public info")
+
+    get "/other_public_info"
+    expect(last_response.status).to eq(200)
+    expect(last_response.body).to eq("Other public info")
 
     post "/public_info"
     expect(last_response.status).to eq(302)

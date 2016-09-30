@@ -32,6 +32,7 @@ require "jwt_authentication"
 use JwtAuthentication, ignore: [
   { method: "GET", path: "/public_info" },
   # { method: "*", path: "/api/*" }
+  # "/api/*"
 ]
 
 configure do

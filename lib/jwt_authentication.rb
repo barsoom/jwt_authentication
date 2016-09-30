@@ -44,10 +44,8 @@ class JwtAuthentication
       return app.call(env) if ignored_path?
 
       if token
-        unless authenticated?
-          data = verify_token
-          persist_session(data)
-        end
+        data = verify_token
+        persist_session(data)
 
         redirect_to_app_after_auth
       else

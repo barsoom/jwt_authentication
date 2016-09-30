@@ -75,6 +75,7 @@ describe JwtAuthentication do
     ENV["JWT_PARAM_MISSING_REDIRECT_URL"] = "http://example.com/request_jwt_auth?app=demo"
     ENV["JWT_ALGORITHM"] = "HS512"
     ENV["JWT_KEY"] = secret_key
+    ENV["JWT_FAKE_REQUEST_AUTH_REDIRECT"] = nil
   end
 
   it "does not interfer with requests when it is not configured" do
@@ -160,6 +161,15 @@ describe JwtAuthentication do
 
     get "/data.json"
     expect(JSON.parse(last_response.body)).to eq({ "email" => "foo@example.com", "name" => "Foo" })
+  end
+
+  it "can skip the request auth redirect to make integration testing simpler" do
+    ENV["JWT_FAKE_REQUEST_AUTH_REDIRECT"] = "1"
+
+    get "/"
+
+    expect(last_response.status).to eq(200)
+    expect(last_response.body).to eq("JWT_FAKE_REQUEST_AUTH_REDIRECT is set, so skipping redirect to: http://example.com/request_jwt_auth?app=demo")
   end
 
   context "a custom sso persister" do

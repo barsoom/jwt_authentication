@@ -22,9 +22,9 @@ class JwtAuthentication
         (Time.now.to_i - last_authenticated_time(session) < timeout_in_seconds)
     end
 
-    def update(session, user_data)
+    def update(session, data)
       session[:jwt_last_authenticated_time] = Time.now.to_i
-      session[:jwt_user_data] = user_data
+      session[:jwt_user_data] = data.fetch("user")
     end
 
     private
@@ -45,8 +45,8 @@ class JwtAuthentication
 
       if token
         unless authenticated?
-          user_data = verify_token
-          persist_session(user_data)
+          data = verify_token
+          persist_session(data)
         end
 
         redirect_to_app_after_auth
@@ -78,8 +78,8 @@ class JwtAuthentication
       sso_session_persister.authenticated?(request.session)
     end
 
-    def persist_session(user_data)
-      sso_session_persister.update(request.session, user_data)
+    def persist_session(data)
+      sso_session_persister.update(request.session, data)
     end
 
     def redirect_to_app_after_auth
@@ -100,7 +100,7 @@ class JwtAuthentication
 
     def verify_token
       data, _ = JWT.decode(token, ENV.fetch("JWT_KEY"), verify = true, algorithm: ENV.fetch("JWT_ALGORITHM"))
-      data.fetch("user", {})
+      data
     end
 
     def url_after_auth

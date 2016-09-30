@@ -194,8 +194,9 @@ describe JwtAuthentication do
       token = build_token(secret: secret_key)
       get "/?jwt_authentication_token=#{token}"
 
-      user_data, session = TestCustomSessionPersisterApp::CustomSsoSessionPersister.data
-      expect(user_data).to eq({ "email" => "foo@example.com", "name" => "Foo" })
+      data, session = TestCustomSessionPersisterApp::CustomSsoSessionPersister.data
+      expect(data.keys.sort).to eq(["exp", "user"])
+      expect(data["user"]).to eq({ "email" => "foo@example.com", "name" => "Foo" })
       expect(session.class).to eq(Rack::Session::Abstract::SessionHash)
     end
   end

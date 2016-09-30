@@ -7,7 +7,7 @@ class JwtAuthentication
 
   def call(env)
     options[:sso_session_persister] ||= begin
-      timeout_in_seconds = ENV.fetch("JWT_SESSION_TIMEOUT_IN_SECONDS").to_i
+      timeout_in_seconds = ENV.fetch("JWT_SESSION_TIMEOUT_IN_SECONDS", 600).to_i
       TimeoutBasedSsoSessionPersister.new(timeout_in_seconds)
     end
 

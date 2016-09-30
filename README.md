@@ -30,7 +30,8 @@ require "sinatra"
 require "jwt_authentication"
 
 use JwtAuthentication, ignore: [
-  { method: "GET", path: "/public_info" }
+  { method: "GET", path: "/public*" },
+  # { method: "GET", path: "/api/*" }
 ]
 
 configure do

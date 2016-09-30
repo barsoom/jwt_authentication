@@ -5,7 +5,7 @@ require "timecop"
 
 class TestApp < Sinatra::Application
   use JwtAuthentication, ignore: [
-    { method: "GET", path: "/public_info" }
+    { method: "GET", path: "/public*" }
   ]
 
   configure do

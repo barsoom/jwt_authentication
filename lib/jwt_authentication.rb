@@ -6,7 +6,32 @@ class JwtAuthentication
   pattr_initialize :app, :options
 
   def call(env)
+    options[:sso_session_persister] ||= begin
+      timeout_in_seconds = ENV.fetch("JWT_SESSION_TIMEOUT_IN_SECONDS").to_i
+      TimeoutBasedSsoSessionPersister.new(timeout_in_seconds)
+    end
+
     Request.call(app, options, env)
+  end
+
+  class TimeoutBasedSsoSessionPersister
+    pattr_initialize :timeout_in_seconds
+
+    def authenticated?(session)
+      last_authenticated_time(session) &&
+        (Time.now.to_i - last_authenticated_time(session) < timeout_in_seconds)
+    end
+
+    def update(session, user_data)
+      session[:jwt_last_authenticated_time] = Time.now.to_i
+      session[:jwt_user_data] = user_data
+    end
+
+    private
+
+    def last_authenticated_time(session)
+      session[:jwt_last_authenticated_time]
+    end
   end
 
   private
@@ -21,8 +46,7 @@ class JwtAuthentication
       if token
         unless authenticated?
           user_data = verify_token
-          remember_user_data(user_data)
-          remember_last_authenicated_time
+          persist_session(user_data)
         end
 
         redirect_to_app_after_auth
@@ -44,17 +68,18 @@ class JwtAuthentication
     end
 
     def ignored_path?
-      options.fetch(:ignore).any? { |opts|
+      options.fetch(:ignore, []).any? { |opts|
         opts.fetch(:method) == request.request_method &&
         opts.fetch(:path)   == request.path
       }
     end
 
     def authenticated?
-      timeout_in_seconds = ENV.fetch("JWT_SESSION_TIMEOUT_IN_SECONDS").to_i
+      sso_session_persister.authenticated?(request.session)
+    end
 
-      last_authenticated_time &&
-        (Time.now.to_i - last_authenticated_time < timeout_in_seconds)
+    def persist_session(user_data)
+      sso_session_persister.update(request.session, user_data)
     end
 
     def redirect_to_app_after_auth
@@ -78,24 +103,16 @@ class JwtAuthentication
       request.session.delete(:url_after_jwt_authentication) || "/"
     end
 
-    def last_authenticated_time
-      request.session[:jwt_last_authenticated_time]
-    end
-
-    def remember_user_data(user_data)
-      request.session[:jwt_user_data] = user_data
-    end
-
-    def remember_last_authenicated_time
-      request.session[:jwt_last_authenticated_time] = Time.now.to_i
-    end
-
     def remember_url
       request.session[:url_after_jwt_authentication] = request.url
     end
 
     def request_auth_url
       ENV.fetch("JWT_PARAM_MISSING_REDIRECT_URL")
+    end
+
+    def sso_session_persister
+      options.fetch(:sso_session_persister)
     end
 
     memoize \

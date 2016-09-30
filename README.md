@@ -6,13 +6,11 @@ Use another app's login to provide access and user data to any rack-based applic
 
 ## Important note about forms
 
-This middleware is not suitable for apps with forms since it will redirect after the session timeout loosing the data.
+This middleware is by default not suitable for apps with forms since it will redirect after the session timeout loosing the data.
 
 For many apps this isn't a problem.
 
-One simple workaround could be to redirect to `JWT_PARAM_MISSING_REDIRECT_URL` before loading a form page, but it's not fool-proof since people sometimes leave forms open in tabs for a very long time.
-
-This can be solved by a more complex protocol but that is out of scope of this library. Ideas for a simple solution are of course welcome :)
+You can change this behavior by passing in your own `sso_session_persister`, see more about that further down.
 
 ## Config
 
@@ -102,6 +100,16 @@ end
 - Use as short a possible `JWT_SESSION_TIMEOUT_IN_SECONDS` as you can.
   - If you make it too short the user will be redirected to the central app all the time which slows things down.
   - If you make it too long the user will still have access to the app long after they've logged out of the central app.
+
+## Custom session persister
+
+You can provide your own way of persisting sso sessions. By default user data is persisted in the session and a timeout is used to determine if the user still has access. By overriding `sso_session_persister` you can handle this is any way you wish.
+
+For the API, look at the default implementation in `lib/jwt_authentication.rb`.
+
+```
+use JwtAuthentication, sso_session_persister: YourCustomPersister.new
+```
 
 ## Running the tests
 

@@ -30,6 +30,39 @@ class TestApp < Sinatra::Application
   end
 end
 
+class TestCustomSessionPersisterApp < Sinatra::Application
+  class CustomSsoSessionPersister
+    @@data = nil
+
+    def authenticated?(session)
+      @@data
+    end
+
+    def update(session, user_data)
+      @@data = [ user_data, session ]
+    end
+
+    def self.forget_session
+      @@data = nil
+    end
+
+    def self.data
+      @@data
+    end
+  end
+
+  use JwtAuthentication, sso_session_persister: CustomSsoSessionPersister.new
+
+  configure do
+    enable :sessions
+    set :session_secret, "00000"
+  end
+
+  get "/:page" do
+    "Hello, world"
+  end
+end
+
 describe JwtAuthentication do
   include Rack::Test::Methods
 
@@ -127,6 +160,34 @@ describe JwtAuthentication do
 
     get "/data.json"
     expect(JSON.parse(last_response.body)).to eq({ "email" => "foo@example.com", "name" => "Foo" })
+  end
+
+  context "a custom sso persister" do
+    let(:app) { TestCustomSessionPersisterApp }
+
+    it "lets you decide if the user is logged in" do
+      token = build_token(secret: secret_key)
+      get "/?jwt_authentication_token=#{token}"
+
+      get "/foo"
+      expect(last_response.status).to eq(200)
+      expect(last_response.body).to eq("Hello, world")
+
+      TestCustomSessionPersisterApp::CustomSsoSessionPersister.forget_session
+
+      get "/foo"
+      expect(last_response.status).to eq(302)
+      expect(last_response.header["Location"]).to eq("http://example.com/request_jwt_auth?app=demo")
+    end
+
+    it "is given user data and session" do
+      token = build_token(secret: secret_key)
+      get "/?jwt_authentication_token=#{token}"
+
+      user_data, session = TestCustomSessionPersisterApp::CustomSsoSessionPersister.data
+      expect(user_data).to eq({ "email" => "foo@example.com", "name" => "Foo" })
+      expect(session.class).to eq(Rack::Session::Abstract::SessionHash)
+    end
   end
 
   private

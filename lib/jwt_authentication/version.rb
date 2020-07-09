@@ -1,3 +1,3 @@
-module JwtAuthentication
+class JwtAuthentication
   VERSION = "0.1.0"
 end

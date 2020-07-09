@@ -206,7 +206,7 @@ describe JwtAuthentication do
       data, session = TestCustomSessionPersisterApp::CustomSsoSessionPersister.data
       expect(data.keys.sort).to eq(["exp", "user"])
       expect(data["user"]).to eq({ "email" => "foo@example.com", "name" => "Foo" })
-      expect(session.class).to eq(Rack::Session::Abstract::SessionHash)
+      expect(session).to be_kind_of(Rack::Session::Abstract::SessionHash)
     end
   end
 

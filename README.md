@@ -110,7 +110,7 @@ You can provide your own way of persisting sso sessions. By default user data is
 
 For the API, look at the default implementation in `lib/jwt_authentication.rb`.
 
-```
+```ruby
 use JwtAuthentication, sso_session_persister: YourCustomPersister.new
 ```
 

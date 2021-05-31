@@ -5,7 +5,7 @@ require 'jwt_authentication/version'
 
 Gem::Specification.new do |spec|
   spec.name          = "jwt_authentication"
-  spec.version       = "0.1"
+  spec.version       = JwtAuthentication::VERSION
   spec.authors       = ["Auctionet"]
   spec.email         = ["devs@auctionet.com"]
 

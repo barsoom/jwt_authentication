@@ -91,7 +91,7 @@ class JwtAuthentication
 
     def request_auth
       if ENV["JWT_FAKE_REQUEST_AUTH_REDIRECT"]
-        [ 200, { }, [ "JWT_FAKE_REQUEST_AUTH_REDIRECT is set, so skipping redirect to: #{request_auth_url}" ] ]
+        [ 200, {}, [ "JWT_FAKE_REQUEST_AUTH_REDIRECT is set, so skipping redirect to: #{request_auth_url}" ] ]
       else
         [ 302, { "Location" => request_auth_url }, [ "" ] ]
       end

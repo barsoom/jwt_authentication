@@ -6,8 +6,8 @@ require 'jwt_authentication/version'
 Gem::Specification.new do |spec|
   spec.name          = "jwt_authentication"
   spec.version       = JwtAuthentication::VERSION
-  spec.authors       = ["Auctionet"]
-  spec.email         = ["devs@auctionet.com"]
+  spec.authors       = [ "Auctionet" ]
+  spec.email         = [ "devs@auctionet.com" ]
 
   spec.summary       = %q{}
   spec.description   = %q{}
@@ -15,7 +15,7 @@ Gem::Specification.new do |spec|
   spec.license       = "MIT"
 
   spec.files         = Dir["lib/**/*.rb"]
-  spec.require_paths = ["lib"]
+  spec.require_paths = [ "lib" ]
 
   spec.add_development_dependency "bundler", ">= 1.11"
   spec.add_development_dependency "rake"

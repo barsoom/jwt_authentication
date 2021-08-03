@@ -1,1 +1,1 @@
-require 'jwt_authentication'
+require "jwt_authentication"

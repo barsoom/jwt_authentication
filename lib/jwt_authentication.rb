@@ -102,7 +102,7 @@ class JwtAuthentication
     end
 
     def verify_token
-      data, _ = JWT.decode(token, ENV.fetch("JWT_KEY"), verify = true, algorithm: ENV.fetch("JWT_ALGORITHM"))
+      data, _ = JWT.decode(token, ENV.fetch("JWT_KEY"), _verify = true, algorithm: ENV.fetch("JWT_ALGORITHM"))
       data
     end
 

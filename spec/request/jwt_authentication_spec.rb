@@ -68,7 +68,7 @@ class TestCustomSessionPersisterApp < Sinatra::Application
   end
 end
 
-describe JwtAuthentication do
+RSpec.describe JwtAuthentication do
   include Rack::Test::Methods
 
   let(:app) { TestApp }

@@ -13,6 +13,7 @@ Gem::Specification.new do |spec|
   spec.description   = %q{}
   spec.homepage      = ""
   spec.license       = "MIT"
+  spec.metadata      = { "rubygems_mfa_required" => "true" }
 
   spec.files         = Dir["lib/**/*.rb"]
   spec.require_paths = [ "lib" ]

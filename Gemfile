@@ -4,6 +4,12 @@ source "https://rubygems.org"
 gemspec
 
 group :development do
-  gem "barsoom_utils", github: "barsoom/barsoom_utils"
+  gem "barsoom_utils"
+  gem "bundler"
+  gem "rack-test"
+  gem "rake"
+  gem "rspec"
   gem "rubocop"
+  gem "sinatra"
+  gem "timecop"
 end

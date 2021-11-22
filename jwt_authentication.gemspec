@@ -18,13 +18,6 @@ Gem::Specification.new do |spec|
   spec.files         = Dir["lib/**/*.rb"]
   spec.require_paths = [ "lib" ]
 
-  spec.add_development_dependency "bundler", ">= 1.11"
-  spec.add_development_dependency "rake"
-  spec.add_development_dependency "rspec", "~> 3.0"
-  spec.add_development_dependency "rack-test"
-  spec.add_development_dependency "sinatra"
-  spec.add_development_dependency "timecop"
-
   spec.add_dependency "attr_extras"
   spec.add_dependency "jwt"
   spec.add_dependency "memoit"

@@ -213,7 +213,7 @@ RSpec.describe JwtAuthentication do
   private
 
   def build_token(secret:)
-    payload_data = { exp: Time.now.to_i + 2, user: { email: "foo@example.com", name: "Foo" }  }
+    payload_data = { exp: Time.now.to_i + 2, user: { email: "foo@example.com", name: "Foo" } }
     JWT.encode(payload_data, secret, "HS512")
   end
 end

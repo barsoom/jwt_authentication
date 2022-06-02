@@ -151,6 +151,12 @@ RSpec.describe JwtAuthentication do
     expect(last_response.status).to eq(403)
   end
 
+  it "rejects a token that has alg=none" do
+    token = build_token(secret: nil, alg: "none")
+    get "/?jwt_authentication_token=#{token}"
+    expect(last_response.status).to eq(403)
+  end
+
   it "can skip some paths by config" do
     get "/public_info"
     expect(last_response.status).to eq(200)
@@ -212,8 +218,8 @@ RSpec.describe JwtAuthentication do
 
   private
 
-  def build_token(secret:)
+  def build_token(secret:, alg: "HS512")
     payload_data = { exp: Time.now.to_i + 2, user: { email: "foo@example.com", name: "Foo" } }
-    JWT.encode(payload_data, secret, "HS512")
+    JWT.encode(payload_data, secret, alg)
   end
 end

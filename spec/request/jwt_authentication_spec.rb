@@ -11,7 +11,8 @@ class TestApp < Sinatra::Application
 
   configure do
     enable :sessions
-    set :session_secret, "00000"
+    # This is a random string
+    set :session_secret, "be400af91d647597550ac222ef8f3f9248fa448803aa4c90a27578f752d25ec9"
   end
 
   get "/public_info" do
@@ -60,7 +61,8 @@ class TestCustomSessionPersisterApp < Sinatra::Application
 
   configure do
     enable :sessions
-    set :session_secret, "00000"
+    # This is a random string
+    set :session_secret, "be400af91d647597550ac222ef8f3f9248fa448803aa4c90a27578f752d25ec9"
   end
 
   get "/:page" do

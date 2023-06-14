@@ -83,7 +83,7 @@ RSpec.describe JwtAuthentication do
     ENV["JWT_FAKE_REQUEST_AUTH_REDIRECT"] = nil
   end
 
-  it "does not interfer with requests when it is not configured" do
+  it "does not interfere with requests when it is not configured" do
     ENV["JWT_KEY"] = nil
 
     get "/foo"

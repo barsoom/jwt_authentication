@@ -96,7 +96,7 @@ RSpec.describe JwtAuthentication do
   it "redirects to request a login when needed" do
     get "/foo"
     expect(last_response.status).to eq(302)
-    expect(last_response.header["Location"]).to eq("http://example.com/request_jwt_auth?app=demo")
+    expect(last_response.headers["Location"]).to eq("http://example.com/request_jwt_auth?app=demo")
   end
 
   it "keeps the requested url" do
@@ -105,7 +105,7 @@ RSpec.describe JwtAuthentication do
     token = build_token(secret: secret_key)
     get "/?jwt_authentication_token=#{token}"
     expect(last_response.status).to eq(302)
-    expect(last_response.header["Location"]).to eq("http://example.org/foo")
+    expect(last_response.headers["Location"]).to eq("http://example.org/foo")
   end
 
   # In some of our apps we use this to redirect back to the main app
@@ -121,7 +121,7 @@ RSpec.describe JwtAuthentication do
     token = build_token(secret: secret_key)
     get "/?jwt_authentication_token=#{token}"
     expect(last_response.status).to eq(302)
-    expect(last_response.header["Location"]).to eq("http://example.org/foo")
+    expect(last_response.headers["Location"]).to eq("http://example.org/foo")
   end
 
   it "is still authenticated until the timeout" do
@@ -137,7 +137,7 @@ RSpec.describe JwtAuthentication do
     Timecop.travel 60
     get "/bar"
     expect(last_response.status).to eq(302)
-    expect(last_response.header["Location"]).to eq("http://example.com/request_jwt_auth?app=demo")
+    expect(last_response.headers["Location"]).to eq("http://example.com/request_jwt_auth?app=demo")
 
     # Invalid token shows an error
     token = build_token(secret: invalid_secret_key)
@@ -204,7 +204,7 @@ RSpec.describe JwtAuthentication do
 
       get "/foo"
       expect(last_response.status).to eq(302)
-      expect(last_response.header["Location"]).to eq("http://example.com/request_jwt_auth?app=demo")
+      expect(last_response.headers["Location"]).to eq("http://example.com/request_jwt_auth?app=demo")
     end
 
     it "is given user data and session" do

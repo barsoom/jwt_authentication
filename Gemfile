@@ -11,6 +11,7 @@ group :development do
   gem "rake"
   gem "rspec"
   gem "rubocop"
-  gem "sinatra"
+  gem "sinatra", "~> 4.0.0"
   gem "timecop"
 end
+

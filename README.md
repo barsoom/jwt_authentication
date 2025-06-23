@@ -1,8 +1,8 @@
 # JwtAuthentication
 
-Simple JWT token based Single Sign On for rack-based apps.
+Simple JWT token based Single Sign On for Rack-based apps.
 
-Use another app's login to provide access and user data to any rack-based application for a limited time.
+Use another app's login to provide access and user data to any Rack-based application for a limited time.
 
 ## Important note about forms
 
@@ -16,10 +16,12 @@ You can change this behavior by passing in your own `sso_session_persister`, see
 
 The middleware won't do anything unless `JWT_KEY` is set.
 
-    export JWT_KEY="a long secret key"
-    export JWT_ALGORITHM="HS512"
-    export JWT_SESSION_TIMEOUT_IN_SECONDS="600"
-    export JWT_AUTH_MISSING_REDIRECT_URL="http://example.com/sso?app=demo"
+```shell
+export JWT_KEY="a long secret key"
+export JWT_ALGORITHM="HS512"
+export JWT_SESSION_TIMEOUT_IN_SECONDS="600"
+export JWT_AUTH_MISSING_REDIRECT_URL="http://example.com/sso?app=demo"
+```
 
 ## Example app
 

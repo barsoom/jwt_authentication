@@ -11,8 +11,7 @@ group :development do
   gem "rake"
   gem "rspec"
   gem "rubocop"
-  # NB: Keep this comment in sync with the README.md.
-  gem "sinatra", "~> 4.0.0"
+  gem "sinatra", "~> 4.0.0" # NB: If you change this version, update README.md with that information.
   gem "timecop"
 end
 

@@ -6,6 +6,7 @@ gemspec
 group :development do
   gem "barsoom_utils"
   gem "bundler"
+  gem "logger"
   gem "rack-test"
   gem "rake"
   gem "rspec"

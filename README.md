@@ -4,7 +4,7 @@ Simple JWT token based Single Sign On for Rack-based apps.
 
 Use another app's login to provide access and user data to any Rack-based application for a limited time.
 
-Currently, we support Sinatra 4.0, but not 4.1.
+Currently, we support Sinatra 4.0, but not 4.1. (Keep this comment in sync with the `Gemfile`.)
 
 ## Important note about forms
 

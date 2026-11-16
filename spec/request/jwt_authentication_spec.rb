@@ -4,6 +4,8 @@ require "rack/test"
 require "timecop"
 
 class TestApp < Sinatra::Application
+  # Checks that JwtAuthentication's responses follow the Rack spec.
+  use Rack::Lint
   use JwtAuthentication, ignore: [
     { method: "G*", path: "/public*" },
     "/other_public_info",
@@ -57,6 +59,8 @@ class TestCustomSessionPersisterApp < Sinatra::Application
     end
   end
 
+  # Checks that JwtAuthentication's responses follow the Rack spec.
+  use Rack::Lint
   use JwtAuthentication, sso_session_persister: CustomSsoSessionPersister.new
 
   configure do
